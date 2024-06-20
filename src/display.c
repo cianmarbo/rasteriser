@@ -11,21 +11,24 @@ void draw_pixel(uint32_t posX, uint32_t posY, uint32_t colour) {
 }
 
 void draw_rect(uint32_t mode, uint32_t posX, uint32_t posY, uint32_t width, uint32_t height, uint32_t colour) {
-    if (mode == RECT_FILLED) {
-        for (int y = posY; y < (posY + height); y++) {
-            for (int x = posX; x < (posX + width); x++) {
-                frame_buffer[(WINDOW_WIDTH * y) + x] = colour;
-            }
-        }
 
-    } else if (mode == RECT_UNFILLED) {
-        for (int y = posY; y < (posY + height); y++) {
-            for (int x = posX; x < (posX + width); x++) {
-                if (y == posY || y == (posY + height) - 1) {
+    if (posX < WINDOW_WIDTH && posY < WINDOW_HEIGHT) {
+        if (mode == RECT_FILLED) {
+            for (int y = posY; y < (posY + height); y++) {
+                for (int x = posX; x < (posX + width); x++) {
                     frame_buffer[(WINDOW_WIDTH * y) + x] = colour;
-                } else {
-                    frame_buffer[(WINDOW_WIDTH * y) + posX] = colour;
-                    frame_buffer[(WINDOW_WIDTH * y) + (posX + width - 1)] = colour;
+                }
+            }
+
+        } else if (mode == RECT_UNFILLED) {
+            for (int y = posY; y < (posY + height); y++) {
+                for (int x = posX; x < (posX + width); x++) {
+                    if (y == posY || y == (posY + height) - 1) {
+                        frame_buffer[(WINDOW_WIDTH * y) + x] = colour;
+                    } else {
+                        frame_buffer[(WINDOW_WIDTH * y) + posX] = colour;
+                        frame_buffer[(WINDOW_WIDTH * y) + (posX + width - 1)] = colour;
+                    }
                 }
             }
         }

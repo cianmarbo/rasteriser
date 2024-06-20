@@ -21,6 +21,6 @@ extern uint8_t* rgb_buffer;
 // ppm only supports 24-bit colour, so 3 bytes per channel
 void argb_to_rgb(void);
 void image_write(uint32_t format);
-const char* image_filename(void);
+const char* image_filename(uint32_t format);
 
 #endif

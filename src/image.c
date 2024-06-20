@@ -19,7 +19,7 @@ void argb_to_rgb(void) {
 
 // write frame buffer to an image, hoping to support more formats soon
 void image_write(uint32_t format) {
-    const char* file_name = image_filename();
+    const char* file_name = image_filename(format);
     if (format == PPM) {
         FILE* file = fopen(file_name, "wb");
         fprintf(file, "P6\n%i %i\n255\n", WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -29,7 +29,13 @@ void image_write(uint32_t format) {
 }
 
 // return date as file name for image exports
-const char* image_filename(void) {
+const char* image_filename(uint32_t format) {
     time_t t = time(NULL);
-    return asctime(localtime(&t));
+    const char* file_name;
+
+    if (format == PPM) {
+        file_name = strcat(asctime(localtime(&t)), ".ppm");
+    }
+
+    return file_name;
 }

@@ -9,7 +9,21 @@
 vec3_t cube_points[N_POINTS];
 vec2_t projected_points[N_POINTS];
 
-float fov_factor = 128;
+vec3_t camera_position = {
+    .x = 0,
+    .y = 0,
+    .z = -5 //set to 0 for 2001 a space odyssey effect!!
+};
+
+vec3_t cube_rotation = {
+    .x = 0,
+    .y = 0,
+    .z = 0
+};
+
+float fov_factor = 500; //set to 2 for 2001 a space odyssey effect!!
+
+int ticks_last_frame = 0;
 
 bool running = NULL;
 
@@ -66,26 +80,48 @@ void process_input(void) {
                 image_write(PPM);
             }
             break;
-        }
+        } 
     }
 }
 
 // recieves vec3 and returns projected 2d vector
 vec2_t project(vec3_t point) {
+
     vec2_t projected_point = {
-        .x = ( fov_factor * point.x ),
-        .y = ( fov_factor * point.y ),
+        .x = (point.x / point.z) * fov_factor,
+        .y = (point.y / point.z) * fov_factor
     };
 
     return projected_point;
 }
 
 void update(void) {
+
+    //while(!SDL_TICKS_PASSED(SDL_GetTicks(), ticks_last_frame + FRAME_TIME_LENGTH));
+
+    int wait_time = FRAME_TIME_LENGTH - (SDL_GetTicks() - ticks_last_frame);
+
+    if (wait_time > 0 && wait_time <= FRAME_TIME_LENGTH) {
+        SDL_Delay(wait_time);
+    }
+
+    ticks_last_frame = SDL_GetTicks();
+
+    cube_rotation.x += 0.01;
+    cube_rotation.y += 0.01;
+    cube_rotation.z += 0.01;
+
     for (int i = 0; i < N_POINTS; i++) {
         vec3_t point = cube_points[i];
 
+        vec3_t transformed_point = vec3_rotate_x(point, cube_rotation.x);
+        transformed_point = vec3_rotate_y(transformed_point, cube_rotation.y);
+        transformed_point = vec3_rotate_z(transformed_point, cube_rotation.z);
+
+        transformed_point.z -= camera_position.z;
+
         // project the current point
-        vec2_t projected_point = project(point);
+        vec2_t projected_point = project(transformed_point);
 
         // append projected 2d vector to an array 
         projected_points[i] = projected_point;
@@ -97,21 +133,21 @@ void render(void) {
     //SDL_RenderClear(renderer);
     clear_framebuffer();
 
+    //draw_grid(GRID_BROKEN, RED, 35);
+    draw_rect(RECT_UNFILLED, 30, 30, 100, 100, WHITE);
+
     for (int i = 0; i < N_POINTS; i++) {
         vec2_t projected_point = projected_points[i];
-
+        
         draw_rect(
-            RECT_UNFILLED,
+            RECT_FILLED,
             projected_point.x + (WINDOW_WIDTH / 2) , // adding width/2 and height/2 moves the cube to the centre of the window
             projected_point.y + (WINDOW_HEIGHT / 2),
             4,
             4,
-            BLUE
+            YELLOW
         );
     }
-
-    draw_grid(GRID_BROKEN, RED, 35);
-    draw_rect(RECT_UNFILLED, 30, 30, 100, 100, WHITE);
 
     render_framebuffer();
 

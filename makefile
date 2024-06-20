@@ -4,7 +4,7 @@ BUILD_DIR=build
 SRC_DIR=src
 
 # Source files
-SOURCES=$(SRC_DIR)/rasteriser.c $(SRC_DIR)/display.c $(SRC_DIR)/image.c
+SOURCES=$(SRC_DIR)/rasteriser.c $(SRC_DIR)/display.c $(SRC_DIR)/image.c $(SRC_DIR)/vec.c
 
 # Object files
 OBJECTS=$(SOURCES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)

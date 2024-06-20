@@ -16,6 +16,7 @@
 #define RED                 0xffff0000
 #define GREY                0xff333333
 #define WHITE               0xffffffff
+#define YELLOW              0xffffff00
 
 // grid modes
 #define GRID_CONTINUOUS     0x1
@@ -27,6 +28,11 @@
 
 // frame buffer size in bytes
 #define FRAME_BUFFER_SIZE_BYTES (sizeof(uint32_t) * (WINDOW_WIDTH * WINDOW_HEIGHT))
+
+#define FPS 30
+#define FRAME_TIME_LENGTH (1000 / FPS)
+
+extern int ticks_last_frame;
 
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
