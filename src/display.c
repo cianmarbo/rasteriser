@@ -7,7 +7,9 @@ SDL_Texture* texture = NULL;
 uint32_t* frame_buffer = NULL;
 
 void draw_pixel(uint32_t posX, uint32_t posY, uint32_t colour) {
-     frame_buffer[(WINDOW_WIDTH * posY) + posX] = colour;
+    if (posX < WINDOW_WIDTH && posY < WINDOW_HEIGHT) {
+        frame_buffer[(WINDOW_WIDTH * posY) + posX] = colour;
+    }
 }
 
 void draw_rect(uint32_t mode, uint32_t posX, uint32_t posY, uint32_t width, uint32_t height, uint32_t colour) {
@@ -60,6 +62,10 @@ void draw_grid(uint32_t mode, uint32_t colour, uint32_t spacing) {
 
 }
 
+void draw_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1) {
+
+}
+
 void clear_framebuffer_colour(uint32_t colour) {
     for (int y = 0; y < WINDOW_HEIGHT; y++) {
         for (int x = 0; x < WINDOW_WIDTH; x++) {
@@ -94,7 +100,7 @@ bool init_window(void) {
         SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH,
         WINDOW_HEIGHT,
-        SDL_WINDOW_OPENGL
+        0
     );
 
     if (!window) {
