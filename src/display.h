@@ -7,8 +7,8 @@
 #include <SDL2/SDL.h>
 
 // window configuration
-#define WINDOW_WIDTH        1024
-#define WINDOW_HEIGHT       768
+#define WINDOW_WIDTH        1920
+#define WINDOW_HEIGHT       1080
 
 // colours
 #define BLUE                0xff0000ff
@@ -43,6 +43,7 @@ extern uint32_t* frame_buffer;
 void draw_pixel(uint32_t posX, uint32_t posY, uint32_t colour);
 void draw_rect(uint32_t mode, uint32_t posX, uint32_t posY, uint32_t width, uint32_t height, uint32_t colour);
 void draw_grid(uint32_t mode, uint32_t colour, uint32_t spacing);
+void draw_line(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1);
 
 void clear_framebuffer(void);
 void clear_framebuffer_colour(uint32_t colour);
